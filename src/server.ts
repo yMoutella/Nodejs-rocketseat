@@ -1,21 +1,13 @@
 import fastify from "fastify";
-import { connection } from "./database";
-import { randomUUID } from "crypto";
 import 'dotenv/config'
 import { env } from "./env";
+import { transactionsRoutes } from "./routes/transactions";
 
 const app = fastify()
 
-app.get('/hello', async () => {
-    const transaction = await connection('transactions').insert({
-        id: randomUUID(),
-        text: 'transação de teste',
-        amount: 1000.2
-    }, "*")
-    return transaction
-
+app.register(transactionsRoutes, {
+    prefix: '/transactions'
 })
-
 
 app.listen({
     port: env.PORT

@@ -18,14 +18,30 @@ export async function transactionsRoutes(app: FastifyInstance) {
             .insert({
                 id: randomUUID(),
                 title,
-                amount: type === 'credit' ? amount : amount * -1
+                amount: type === 'credit' ? amount : amount * -1,
             })
 
         res.status(201).send({ message: 'success', data: { title, amount, type } })
 
     })
 
+    app.get('/:id', async (req, res) => {
+        const getTransactionsParamsSchema = z.object({
+            id: z.string().uuid(),
+        })
+
+        const { id } = getTransactionsParamsSchema.parse(req.params)
+        const transactions = await connection('transactions').where('id', id).first()
+
+        res.status(200).send({
+            transactions
+        })
+    })
+
     app.get('/', async (req, res) => {
-        res.status(200).send(await connection('transactions').select('*'))
+        const transactions = await connection('transactions').select()
+        res.status(200).send({
+            transactions
+        })
     })
 }

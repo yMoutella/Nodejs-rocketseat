@@ -6,6 +6,10 @@ import { checkSessionId } from "../middlewares/middleware";
 
 export async function transactionsRoutes(app: FastifyInstance) {
 
+    app.addHook('preHandler', async (req, res) => {
+        console.log(req.url)
+    })
+
     app.post('/', async (req, res) => {
 
         const createTransactionBodySchema = z.object({
@@ -22,11 +26,12 @@ export async function transactionsRoutes(app: FastifyInstance) {
             sessionId = randomUUID()
         }
 
-        res.cookie('sessionId', sessionId), {
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7 // 7 days - measurement in seconds
-        }
-
+        res.cookie('sessionId', sessionId,
+            {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 7 // 7 days - measurement in seconds
+            }
+        )
 
         await connection('transactions')
             .insert({

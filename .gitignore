@@ -1,5 +1,5 @@
 node_modules
-./db
+./db/app.db
 
 out
 dist
@@ -13,6 +13,7 @@ _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 .env
+.env.test
 .env.development.local
 .env.test.local
 .env.production.local

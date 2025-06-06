@@ -33,15 +33,17 @@ export async function transactionsRoutes(app: FastifyInstance) {
             }
         )
 
-        await connection('transactions')
+        const transactionCreated = await connection('transactions')
             .insert({
                 id: randomUUID(),
                 title,
                 amount: type === 'credit' ? amount : amount * -1,
                 session_id: sessionId
             })
+            .returning('*')
 
-        res.status(201).send({ message: 'success', data: { title, amount, type } })
+
+        res.status(201).send({ message: 'success', data: transactionCreated[0] })
 
     })
 
@@ -69,7 +71,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
         const { sessionId } = req.cookies
 
         const { id } = getTransactionsParamsSchema.parse(req.params)
-        const transactions = await connection('transactions')
+        const transaction = await connection('transactions')
             .where({
                 id,
                 session_id: sessionId
@@ -77,7 +79,7 @@ export async function transactionsRoutes(app: FastifyInstance) {
             .first()
 
         res.status(200).send({
-            transactions
+            transaction
         })
     })
 

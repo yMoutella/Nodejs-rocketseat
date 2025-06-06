@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "knex": "node --no-warnings --import tsx ./node_modules/.bin/knex",
-    "test": "NODE_ENV=test vitest"
+    "test": "NODE_ENV=test vitest",
+    "build": "tsup src --out-dir build"
+
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -23,7 +25,8 @@
     "zod": "^3.25.49"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29"
+    "@types/node": "^22.15.29",
+    "tsup": "^8.5.0"
   },
   "private": true,
   "peerDependencies": {

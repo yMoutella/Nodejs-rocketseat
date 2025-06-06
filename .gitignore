@@ -1,17 +1,13 @@
+# Node.js dependencies
 node_modules
-./db/app.db
 
-out
-dist
-*.tgz
+# Optional npm cache directory
+db/*.db
 
-coverage
-*.lcov
+# Compiled output
+build
 
-logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
+# Environment variables
 .env
 .env.test
 .env.development.local

@@ -90,6 +90,30 @@ describe('Transactions Routes', async () => {
         )
     })
 
+    it('User can get summary according to session_id', async () => {
+        const createTransactionResponse = await supertest(app.server)
+            .post('/transactions')
+            .send({
+                title: 'Test Transaction',
+                amount: 100,
+                type: 'credit',
+            })
+
+        const cookies = createTransactionResponse.get('Set-Cookie')!
+        const { id } = createTransactionResponse.body.data
+
+        const transactionSummary = await supertest(app.server)
+            .get('/transactions/summary')
+            .set('Cookie', cookies)
+            .expect(200)
+
+        expect(transactionSummary.body).toEqual(
+            expect.objectContaining({
+                amount: expect.any(Number),
+            })
+        )
+    })
+
 
 })
 
